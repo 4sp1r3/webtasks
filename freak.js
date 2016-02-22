@@ -1,7 +1,5 @@
 var tls = require('tls');
 
-var vulnerable = false;
-
 function check(host, cb) {
     var options = {
         host: host,
@@ -10,15 +8,14 @@ function check(host, cb) {
     };
 
     var client = tls.connect(options, function () {
-        vulnerable = true;
         client.end();
 
-        cb(null, { vulnerable: vulnerable });
+        cb(null, { vulnerable: true });
     });
 
     client.on('error', function(err){
       client.end();
-      cb(null, { vulnerable: vulnerable });
+      cb(null, { vulnerable: false });
     });
 }
 
